@@ -1,0 +1,4 @@
+1.
+pyqt5 + python 2+ qt designer installation:
+pip install python-qt5
+copy D:\Anaconda2\Lib\site-packages\PyQt5\plugins\platforms to desingner.exe directory
