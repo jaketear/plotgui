@@ -9,7 +9,7 @@ from datetime import datetime
 import matplotlib.dates as mdates
 from matplotlib.dates import AutoDateLocator
 import pandas as pd
-from input import *
+from input_function import *
 
 def plot_para(filename,para_list=[]):
     if para_list:
