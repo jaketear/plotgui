@@ -12,8 +12,6 @@ import pandas as pd
 from input_function import *
 
 def plot_para(filename,para_list=[]):
-    if para_list:
-        para_list.insert(0,"time")
     df=cols_input(filename,para_list)
     #df.plot(x="time")
 #    time=df.time
@@ -21,7 +19,7 @@ def plot_para(filename,para_list=[]):
 #    y = df[para_list[1]].values
 #    
     # 配置时间坐标轴
-    df["time"]=pd.to_datetime(df["time"],format='%H:%M:%S:%f')
+    df[para_list[0]]=pd.to_datetime(df[para_list[0]],format='%H:%M:%S:%f')
     fig1=plt.figure()
     ax1 = fig1.add_subplot(1,1,1)
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S:%f'))#设置时间标签显示格式
