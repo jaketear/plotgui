@@ -59,6 +59,10 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     #self.textBrowser.append(df) 
         #else:
             #self.textBrowser.append("fail") 
+    
+    def subplot(self):
+        if len(self.select_list)>1:
+            subplot_para(self.filename,self.select_list)
                     
 if __name__=="__main__":  
     import sys  

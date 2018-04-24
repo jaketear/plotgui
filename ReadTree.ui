@@ -15,14 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>INPUT FILE</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
+    <item row="3" column="0">
      <widget class="QTreeWidget" name="treeWidget">
       <column>
        <property name="text">
@@ -32,12 +25,26 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QTextBrowser" name="textBrowser"/>
-    </item>
-    <item row="0" column="1">
      <widget class="QPushButton" name="pushButton_2">
       <property name="text">
        <string>PLOT</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>INPUT FILE</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QTextBrowser" name="textBrowser"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>SUBPLOT</string>
       </property>
      </widget>
     </item>
@@ -105,11 +112,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>subplot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>540</x>
+     <y>73</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>56</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>button_click()</slot>
   <slot>read()</slot>
   <slot>getitem()</slot>
   <slot>plot()</slot>
+  <slot>subplot()</slot>
  </slots>
 </ui>
