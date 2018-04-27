@@ -28,7 +28,7 @@ def plot_para(filename,para_list=[]):
 
     #autodates= AutoDateLocator()                # 时间间隔自动选取
     #plt.gca().xaxis.set_major_locator(autodates)
-    df.plot("time",ax=ax1)
+    df.plot(para_list[0],ax=ax1)
     plt.show()
     
 def subplot_para(filename,para_list=[]):
@@ -38,7 +38,7 @@ def subplot_para(filename,para_list=[]):
 #    fig2=plt.figure()
 #    ax2=fig2.add_subplot(1,1,1)
     
-    ax=df.plot("time",subplots=True,layout=(picNum,1),sharex=True)
+    ax=df.plot(para_list[0],subplots=True,layout=(picNum,1),sharex=True)
     ax[0][0].xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S:%f'))
     plt.show()
 if __name__ == "__main__":
