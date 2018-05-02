@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ReadTree.ui'
 #
-# Created: Tue Apr 24 23:11:12 2018
+# Created: Mon Apr 30 14:23:46 2018
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,6 +18,7 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
         self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
+        self.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeWidget.setObjectName("treeWidget")
         self.gridLayout.addWidget(self.treeWidget, 3, 0, 1, 1)
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
@@ -32,6 +33,9 @@ class Ui_MainWindow(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setObjectName("pushButton_3")
         self.gridLayout.addWidget(self.pushButton_3, 2, 1, 1, 1)
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.gridLayout.addWidget(self.pushButton_4, 2, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 23))
@@ -46,6 +50,7 @@ class Ui_MainWindow(object):
         self.treeWidget.itemClicked['QTreeWidgetItem*','int'].connect(MainWindow.getitem)
         self.pushButton_2.clicked.connect(MainWindow.plot)
         self.pushButton_3.clicked.connect(MainWindow.subplot)
+        self.pushButton_4.clicked.connect(MainWindow.save)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -55,4 +60,5 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "PLOT"))
         self.pushButton.setText(_translate("MainWindow", "INPUT FILE"))
         self.pushButton_3.setText(_translate("MainWindow", "SUBPLOT"))
+        self.pushButton_4.setText(_translate("MainWindow", "SAVE FILE"))
 

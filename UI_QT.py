@@ -20,7 +20,7 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.dict_root={}
         self.dict_timename={}
         self.createRightMenu()
-    def read(self):  
+    def read_one(self):  #optional [read(),read_one()]
         file_name, ok=QFileDialog.getOpenFileName(self,'读取','D:/')
         if file_name:
             para_name=header_input(file_name,sep='\s+') #DataFrame: input the first row of data file
@@ -35,8 +35,29 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 child.setText(0,para_list[i])
 #            self.filename=file_name  #property filename for other function use
 #            self.name_time=para_list[0] #name of time column
-            self.dict_timename[root]=para_list[0]    
+            #self.dict_timename[root]=para_list[0]    
             self.dict_root[root]=file_name #a root vs a file_name
+            self.dict_timename[file_name]=para_list[0]
+            
+    def read(self):  #read multifiles
+        file_name, ok=QFileDialog.getOpenFileNames(self,'Load','D:/')  #multi files input
+        if file_name:  #file_name is a list
+            for each_file in file_name:
+                para_name=header_input(each_file,sep='\s+') #DataFrame: input the first row of data file
+                pos=each_file.rindex('/')
+                root_name=each_file[pos+1:]  #select filename without path
+                self.treeWidget.setSelectionMode(QAbstractItemView.ExtendedSelection) #set multi select mode
+                root=QtWidgets.QTreeWidgetItem(self.treeWidget) #QTreeWidgetItem object: root
+                root.setText(0,root_name) #set text of treewidget
+                para_list=para_name.values.tolist()[0] #ndarray to list
+                for i in range(len(para_list)):
+                    child=QtWidgets.QTreeWidgetItem(root)  #child of root
+                    child.setText(0,para_list[i])
+    #            self.filename=file_name  #property filename for other function use
+    #            self.name_time=para_list[0] #name of time column
+                #self.dict_timename[root]=para_list[0]    
+                self.dict_root[root]=each_file #a root vs a file_name 
+                self.dict_timename[each_file]=para_list[0]
             
     def createRightMenu(self):  
   
@@ -70,10 +91,10 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 filename=self.dict_root[ii.parent()]  #QTreeWidgetItem.parent(): parent node
                 pos=filename.rindex('/')
                 root_name=filename[pos+1:]
-                if ii.text(0)!=root_name and ii.text(0)!=self.dict_timename[ii.parent()]:
+                if ii.text(0)!=root_name:
     #          filename=self.dict_root[ii.parent()] #QTreeWidgetItem.parent(): parent node
                     if not self.dict_select.has_key(filename):
-                        self.dict_select[filename]=[self.dict_timename[ii.parent()]] #name_time
+                        self.dict_select[filename]=[]
                     self.dict_select[filename].append(ii.text(0).encode())  #all use str here(py2
                # self.select_list.append(ii.text(0).encode())  #all use str here(py2)
         #self.select_list.insert(0,self.name_time)  #insert the "time" column
@@ -89,6 +110,10 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
 #   is not allowed plot together
         if len(self.dict_select)>0:
             for key in self.dict_select:
+#/may optimize/ # place time to the list[0]:remove it and insert it to the list[0]
+                if self.dict_timename[key] in self.dict_select[key]:   
+                    self.dict_select[key].remove(self.dict_timename[key])
+                self.dict_select[key].insert(0,self.dict_timename[key])
                 plot_para(key,self.dict_select[key])
 #        
 #        if len(self.select_list)>1:
@@ -100,10 +125,26 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     def subplot(self):
         if len(self.dict_select)>0:
             for key in self.dict_select:   #for now different file has different time series
+                if self.dict_timename[key] in self.dict_select[key]:
+                    self.dict_select[key].remove(self.dict_timename[key])
+                self.dict_select[key].insert(0,self.dict_timename[key])
                 subplot_para(key,self.dict_select[key])
 #        if len(self.select_list)>1:
 #            subplot_para(self.filename,self.select_list)
-                    
+                
+    def save(self):
+        if self.dict_select:
+            fileName2, ok2 = QFileDialog.getSaveFileName(self,"Save", "D:/", \
+                                    "All Files (*);;Text Files (*.txt);;Text Files (*.csv)") 
+            if fileName2:
+                df_list=[]
+                for key in self.dict_select:
+                    cols=self.dict_select[key]
+                    df=cols_input(key,cols,sep='\s+')
+                    df_list.append(df)
+                df_all=pd.concat(df_list,axis=1,join='outer',ignore_index=False) #merge different dataframe
+                save_file(fileName2,df_all,sep='\t') #/update for more sep/
+                
 if __name__=="__main__":  
     import sys  
     app=QtWidgets.QApplication(sys.argv)  

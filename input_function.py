@@ -69,6 +69,9 @@ def cols_input(filename,cols,sep='\s+'):  #without chunkinput now!!
             df=pd.read_excel(f,usecols=cols)
     return df
 
+def save_file(filename,df,sep='\t'):
+    df.to_csv(filename,sep,index=False,encoding="utf-8")
+
 if __name__ == "__main__":
     #filename=u"D:/flightdata/FTPD-C919-10101-PD-170318-G-02-CAOWEN-664002-16.txt"
     #filename=u"D:/flightdata/FTPD-C919-10101-PD-170318-G-02-CAOWEN-664003-16.txt"
@@ -78,6 +81,7 @@ if __name__ == "__main__":
     #df=header_input(filename,sep='all')
    # df=cols_input(filename,["time","HF_FSECU_1_L354_HLS_OMS_Status_Flap_Inoperative","FCM3_Voted_True_Airspeed"])
     #df=cols_input(filename,[u"日期"])
+    save_file(u"C:/Users/admin/Desktop/exp.txt",df)
     time2=time.time()
     print time2-time1        
     
