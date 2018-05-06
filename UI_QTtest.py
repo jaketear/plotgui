@@ -6,7 +6,7 @@ Created on Sat Apr 14 15:11:48 2018
 """
 from PyQt5 import QtWidgets  
 #from ReadTree import *  
-from MainUI import *
+from MainUItest import *
 from input_function import *
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
 from plot import *  
@@ -108,20 +108,30 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     
     def display(self):
         if len(self.dict_select)>0:
-            horizontalHeader=[]
-            df_list=[]        
-            for key in self.dict_select:
-                horizontalHeader +=self.dict_select[key]
-                df_key=cols_input(key,self.dict_select[key],sep='\s+')
-                df_list.append(df_key)
-            df_all=pd.concat(df_list,axis=1,join='outer',ignore_index=False)
             
-            print df_all.columns
-#            print len(df_all.columns.values)
-#            print '{0}'.format(df_all.iat[0,0])
-            table_model=TableModel(self)
-            table_model.update(df_all)
-            self.tableView.setModel(table_model)
+            #table_model=TableModel(self)
+            for key in self.dict_select:
+                df_key=cols_input(key,self.dict_select[key],sep='\s+')
+                tab = QtWidgets.QWidget()
+                self.tabWidget.addTab(tab, key)
+                self.gridLayout_2 = QtWidgets.QGridLayout(tab)
+                self.tableView = QtWidgets.QTableView(tab)
+                self.tableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                self.gridLayout_2.addWidget(self.tableView, 0, 0, 1, 1)
+               # self.gridLayout.addWidget(self.tableView, 0, 0, 1, 1)
+                table_model=TableModel(self)
+                table_model.update(df_key)
+                self.tableView.setModel(table_model)
+                self.tableView.resizeColumnsToContents()
+#                df_list.append(df_key)
+#            df_all=pd.concat(df_list,axis=1,join='outer',ignore_index=False)
+#            
+#            print df_all.columns
+##            print len(df_all.columns.values)
+##            print '{0}'.format(df_all.iat[0,0])
+#            table_model=TableModel(self)
+#            table_model.update(df_all)
+#            self.tableView.setModel(table_model)
         
         
     def plot(self):
