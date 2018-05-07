@@ -49,10 +49,11 @@ def header_input(filename,sep='\s+'): #input the para name first,use with col_in
     with open(filename,'rb') as f:
         if filename.endswith(('.txt','.csv')):
             if sep=='all':
-                df=pd.read_table(f,sep='\s+|\t|,|;',header=None,nrows=1,engine='python')
+                #Use str or object to preserve and not interpret dtype
+                df=pd.read_table(f,sep='\s+|\t|,|;',header=None,nrows=1,engine='python',dtype=object)
                 #or only input the columns index:nrows=0,remove header=None
             else:
-                df=pd.read_table(f,sep=sep,header=None,nrows=1,engine='c')
+                df=pd.read_table(f,sep=sep,header=None,nrows=1,engine='c',dtype=object)
         if filename.endswith(('.xls','.xlsx')):
             df=pd.read_excel(f,header=None)
             df=df.iloc[0,:]  #select the first row

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainUItest.ui'
 #
-# Created: Sun May 06 21:19:44 2018
+# Created: Mon May 07 22:55:26 2018
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,30 +15,36 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName("gridLayout")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
-        self.gridLayout_2.addWidget(self.pushButton, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton, 0, 0, 1, 1)
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setObjectName("pushButton_4")
-        self.gridLayout_2.addWidget(self.pushButton_4, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_4, 0, 1, 1, 1)
+        self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.gridLayout.addWidget(self.pushButton_6, 0, 2, 1, 1)
+        self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.gridLayout.addWidget(self.pushButton_7, 0, 3, 1, 1)
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout_2.addWidget(self.pushButton_2, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_2, 0, 4, 1, 1)
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout_2.addWidget(self.pushButton_3, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_3, 0, 5, 1, 1)
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setObjectName("pushButton_5")
-        self.gridLayout_2.addWidget(self.pushButton_5, 0, 4, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_5, 0, 6, 1, 1)
         self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeWidget.setObjectName("treeWidget")
-        self.gridLayout_2.addWidget(self.treeWidget, 1, 0, 1, 2)
+        self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 3)
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
-        self.gridLayout_2.addWidget(self.tabWidget, 1, 2, 1, 3)
+        self.gridLayout.addWidget(self.tabWidget, 1, 3, 1, 4)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 23))
@@ -56,6 +62,8 @@ class Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(MainWindow.subplot)
         self.pushButton_4.clicked.connect(MainWindow.save)
         self.pushButton_5.clicked.connect(MainWindow.display)
+        self.pushButton_6.clicked.connect(MainWindow.delete)
+        self.pushButton_7.clicked.connect(MainWindow.clear_tab)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -63,6 +71,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "INPUT FILE"))
         self.pushButton_4.setText(_translate("MainWindow", "SAVE FILE"))
+        self.pushButton_6.setText(_translate("MainWindow", "DELETE"))
+        self.pushButton_7.setText(_translate("MainWindow", "CLEAR TABLE"))
         self.pushButton_2.setText(_translate("MainWindow", "PLOT"))
         self.pushButton_3.setText(_translate("MainWindow", "SUBPLOT"))
         self.pushButton_5.setText(_translate("MainWindow", "DISPLAY"))

@@ -59,6 +59,14 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 #self.dict_timename[root]=para_list[0]    
                 self.dict_root[root]=each_file #a root vs a file_name 
                 self.dict_timename[each_file]=para_list[0]
+                
+    def delete(self):
+        Item_list=self.treeWidget.selectedItems()
+        for ii in Item_list:
+            if self.dict_root.has_key(ii):
+                idx=self.treeWidget.indexOfTopLevelItem(ii)
+                null=self.treeWidget.takeTopLevelItem(idx)
+        
             
     def createRightMenu(self):  
   
@@ -75,6 +83,7 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.rightMenu.addSeparator()  
         self.action1.triggered.connect(self.plot)
         self.action2.triggered.connect(self.subplot)
+        self.action3.triggered.connect(self.delete)
         self.action4.triggered.connect(self.save)
         # self.rightMenu.addAction(self.RenameAct)  
         
@@ -114,26 +123,22 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 df_key=cols_input(key,self.dict_select[key],sep='\s+')
                 tab = QtWidgets.QWidget()
                 self.tabWidget.addTab(tab, key)
-                self.gridLayout_2 = QtWidgets.QGridLayout(tab)
+                self.gridLayout = QtWidgets.QGridLayout(tab)
                 self.tableView = QtWidgets.QTableView(tab)
                 self.tableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.gridLayout_2.addWidget(self.tableView, 0, 0, 1, 1)
+                self.gridLayout.addWidget(self.tableView, 0, 0, 1, 1)
                # self.gridLayout.addWidget(self.tableView, 0, 0, 1, 1)
                 table_model=TableModel(self)
                 table_model.update(df_key)
                 self.tableView.setModel(table_model)
-                self.tableView.resizeColumnsToContents()
-#                df_list.append(df_key)
-#            df_all=pd.concat(df_list,axis=1,join='outer',ignore_index=False)
-#            
-#            print df_all.columns
-##            print len(df_all.columns.values)
-##            print '{0}'.format(df_all.iat[0,0])
-#            table_model=TableModel(self)
-#            table_model.update(df_all)
-#            self.tableView.setModel(table_model)
+                self.tableView.resizeColumnsToContents()  #effective after setModel
         
-        
+    def clear_tab(self):
+        idx=self.tabWidget.currentIndex()
+        print idx
+        if idx!=-1:
+            self.tabWidget.removeTab(idx)
+            
     def plot(self):
 #   for now different file has different time series, para from different file..
 #   is not allowed plot together
@@ -175,6 +180,8 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                     df_list.append(df)
                 df_all=pd.concat(df_list,axis=1,join='outer',ignore_index=False) #merge different dataframe
                 save_file(fileName2,df_all,sep='\t') #/update for more sep/
+                
+        
                 
 class TableModel(QtCore.QAbstractTableModel): 
     def __init__(self, parent=None, *args): 
