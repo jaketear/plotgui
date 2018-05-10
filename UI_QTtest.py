@@ -11,7 +11,7 @@ from input_function import *
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
 from plot import *  
       
-class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):  
+class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):  #main window
     def __init__(self):  
         super(MyWindow,self).__init__()  
         self.setupUi(self)
@@ -28,6 +28,9 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             pos=file_name.rindex('/')
             root_name=file_name[pos+1:]  #select filename without path
             self.treeWidget.setSelectionMode(QAbstractItemView.ExtendedSelection) #set multi select mode
+            head=self.treeWidget.header()
+            head.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+            head.setStretchLastSection(False)
             root=QtWidgets.QTreeWidgetItem(self.treeWidget) #QTreeWidgetItem object: root
             root.setText(0,root_name) #set text of treewidget
             para_list=para_name.values.tolist()[0] #ndarray to list
@@ -48,6 +51,11 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 pos=each_file.rindex('/')
                 root_name=each_file[pos+1:]  #select filename without path
                 self.treeWidget.setSelectionMode(QAbstractItemView.ExtendedSelection) #set multi select mode
+                #****set resizetocontents
+                head=self.treeWidget.header()
+                head.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+                head.setStretchLastSection(False)
+                #****
                 root=QtWidgets.QTreeWidgetItem(self.treeWidget) #QTreeWidgetItem object: root
                 root.setText(0,root_name) #set text of treewidget
                 para_list=para_name.values.tolist()[0] #ndarray to list
@@ -115,6 +123,10 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     #        else:
     #            self.para=None
     
+    #**def display**
+    #  use QTabWidget as file tab of data source
+    #  use QTableView display the data
+    #  MVC mode use model to display the dataframe
     def display(self):
         if len(self.dict_select)>0:
             
@@ -134,8 +146,7 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 self.tableView.resizeColumnsToContents()  #effective after setModel
         
     def clear_tab(self):
-        idx=self.tabWidget.currentIndex()
-        print idx
+        idx=self.tabWidget.currentIndex()  #index of current display tab
         if idx!=-1:
             self.tabWidget.removeTab(idx)
             
@@ -181,9 +192,8 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 df_all=pd.concat(df_list,axis=1,join='outer',ignore_index=False) #merge different dataframe
                 save_file(fileName2,df_all,sep='\t') #/update for more sep/
                 
-        
                 
-class TableModel(QtCore.QAbstractTableModel): 
+class TableModel(QtCore.QAbstractTableModel):   #MVC: model of QTableView
     def __init__(self, parent=None, *args): 
         super(TableModel, self).__init__()
         self.datatable = None
@@ -214,6 +224,8 @@ class TableModel(QtCore.QAbstractTableModel):
 
     def flags(self, index):
         return QtCore.Qt.ItemIsEnabled
+
+
                 
 if __name__=="__main__":  
     import sys  
