@@ -4,13 +4,39 @@ Created on Sun May 20 21:53:22 2018
 
 @author: Yan Hua
 """
-
+import matplotlib
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from datetime import datetime
 import matplotlib.dates as mdates
 from matplotlib.dates import AutoDateLocator
 import pandas as pd
 from input_function import *
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
+class PlotCanvas(FigureCanvas):
+    
+    def __init__(self,parent=None,Width=5,height=4,dpi=100):
+        fig=Figure(figuresize=(Width,height),dpi=dpi)
+        self.axes = fig.add_subplot(111)# 调用figure下面的add_subplot方法，类似于matplotlib.pyplot下面的subplot方法
+ 
+        FigureCanvas.__init__(self, fig)# 初始化父类
+        self.setParent(parent)
+ 
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot()
+ 
+ 
+    def draw(self,df=None,para_list=[]):
+        ax = self.figure.add_subplot(111)
+        df.plot
+        self.draw()
 
 class plot(object):
     def __init__(self,df):

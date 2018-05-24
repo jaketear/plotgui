@@ -28,6 +28,9 @@ class DataFile(object):
     def __init__(self,filename="",sep="\s+"):
         self.filename=filename
         self.sep=sep
+        
+    def __repr__(self):
+       return 'class<DataFile>(filename:%s)' % self.filename 
        
 #all_input:一次导入整个数据文件（文件过大时会卡死），如不指定filename，sep会使用类属性        
     def all_input(self,filename="",sep=""):
@@ -133,6 +136,9 @@ class normal_DataFile(DataFile):
     def __init__(self,filename="",sep="\s+"):
         super(normal_DataFile,self).__init__(filename,sep)
         self.info_list=self.get_info(filename)
+        
+    def __repr__(self):
+       return 'class<normal_DataFile>(filename:%s)' % self.filename 
         
 #get_info:根据一般试飞数据文件的文件名获取，试飞数据相关信息，返回信息列表        
     def get_info(self,filename=""):

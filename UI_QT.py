@@ -4,11 +4,15 @@ Created on Sat Apr 14 15:11:48 2018
 
 @author: Yan Hua
 """
+import matplotlib
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtWidgets  
 #from ReadTree import *  
 from MainUI import *
 from input_function import *
-from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
+from PyQt5.QtWidgets import QFileDialog, QAbstractItemView, QSizePolicy
 from plot import *  
       
 class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):  
@@ -134,7 +138,16 @@ class MyWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 if self.dict_timename[key] in para_select:   
                     para_select.remove(self.dict_timename[key])
                 para_select.insert(0,self.dict_timename[key])
-                plot_para(key,para_select)
+                #plot_para(key,para_select)
+                self.m = PlotCanvas(self.tableView, width=5.0, height=4.0)
+                self.mpl_toolbar = NavigationToolbar(self.m,self.tableView)
+                self.mpl_toolbar.showNormal()
+                vbox = QtWidgets.QVBoxLayout()
+                vbox.addWidget(self.mpl_toolbar)
+                vbox.addWidget(self.m)
+                self.m.plot_para(key,para_select)
+               
+            
 #        
 #        if len(self.select_list)>1:
 #            plot_para(self.filename,self.select_list)

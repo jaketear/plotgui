@@ -4,12 +4,47 @@ Created on Thu Apr 12 20:36:58 2018
 
 @author: Yan Hua
 """
+import matplotlib
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from datetime import datetime
 import matplotlib.dates as mdates
 from matplotlib.dates import AutoDateLocator
 import pandas as pd
 from input_function import *
+from PyQt5.QtWidgets import QSizePolicy
+
+class PlotCanvas(FigureCanvas):
+    
+    def __init__(self,parent=None,width=5,height=4,dpi=100):
+        fig=Figure(figsize=(width,height),dpi=dpi)
+        self.axes = fig.add_subplot(111)# 调用figure下面的add_subplot方法，类似于matplotlib.pyplot下面的subplot方法
+        #self.axes = fig.add_axes([0,0,1,1])
+        FigureCanvas.__init__(self, fig)# 初始化父类
+        self.setParent(parent)
+ 
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        
+    def plot_para(self,filename,para_list=[]):
+        df=cols_input(filename,para_list)
+        df[para_list[0]]=pd.to_datetime(df[para_list[0]],format='%H:%M:%S:%f')
+#        fig1=plt.figure()
+#        ax1 = fig1.add_subplot(1,1,1)
+        self.axes.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S:%f'))#设置时间标签显示格式
+        #plt.xticks(pd.date_range('2014-09-01','2014-09-30'),rotation=90)
+        #plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S.%f')) # 显示时间坐标的格式
+    
+        #autodates= AutoDateLocator()                # 时间间隔自动选取
+        #plt.gca().xaxis.set_major_locator(autodates)
+        df.plot(para_list[0],ax=self.axes)
+        self.draw()
+        self.show()
 
 def plot_para(filename,para_list=[]):
     df=cols_input(filename,para_list)
