@@ -20,10 +20,10 @@ from PyQt5.QtWidgets import QSizePolicy
 class PlotCanvas(FigureCanvas):
     
     def __init__(self,parent=None,width=5,height=4,dpi=100):
-        fig=Figure(figsize=(width,height),dpi=dpi)
-        self.axes = fig.add_subplot(111)# 调用figure下面的add_subplot方法，类似于matplotlib.pyplot下面的subplot方法
+        self.fig=Figure(figsize=(width,height),dpi=dpi)
+        #self.axes = fig.add_subplot(111)# 调用figure下面的add_subplot方法，类似于matplotlib.pyplot下面的subplot方法
         #self.axes = fig.add_axes([0,0,1,1])
-        FigureCanvas.__init__(self, fig)# 初始化父类
+        FigureCanvas.__init__(self, self.fig)# 初始化父类
         self.setParent(parent)
  
         FigureCanvas.setSizePolicy(self,
@@ -31,20 +31,46 @@ class PlotCanvas(FigureCanvas):
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
         
-    def plot_para(self,filename,para_list=[]):
-        df=cols_input(filename,para_list)
+    def plot_para_time(self,source=None,para_list=[]):
+        if isinstance(source,(str,unicode)): #！！！！python 2
+            df=cols_input(source,para_list)
+        elif isinstance(source,pd.DataFrame):
+            df=source
+        else:
+            return
         df[para_list[0]]=pd.to_datetime(df[para_list[0]],format='%H:%M:%S:%f')
-#        fig1=plt.figure()
-#        ax1 = fig1.add_subplot(1,1,1)
-        self.axes.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S:%f'))#设置时间标签显示格式
+        ax1 = self.fig.add_subplot(1,1,1)
+        ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S:%f'))#设置时间标签显示格式
         #plt.xticks(pd.date_range('2014-09-01','2014-09-30'),rotation=90)
         #plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S.%f')) # 显示时间坐标的格式
     
         #autodates= AutoDateLocator()                # 时间间隔自动选取
         #plt.gca().xaxis.set_major_locator(autodates)
-        df.plot(para_list[0],ax=self.axes)
-        self.draw()
+        df.plot(para_list[0],ax=ax1)
+        #self.draw()
         self.show()
+        
+    def plot_para(self,source=None,para_list=[]):
+        if isinstance(source,(str,unicode)): #！！！！python 2
+            df=cols_input(source,para_list)
+        elif isinstance(source,pd.DataFrame):
+            df=source
+        else:
+            return
+        ax1 = self.fig.add_subplot(1,1,1)
+        df.plot(para_list[0],ax=ax1)
+        #self.draw()
+        self.show()
+        
+    def add_toolbar(self,parent=None):
+        toolbar=NavigationToolbar(self,parent)
+        return toolbar
+    
+    def show_toolbar(self,toolbar):
+        toolbar.show()
+        
+    def hide_toolbar(self,toolbar):
+        toolbar.hide()
 
 def plot_para(filename,para_list=[]):
     df=cols_input(filename,para_list)
